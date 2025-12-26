@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For Stanley</title>
     
     <!-- 引入 React 和 ReactDOM -->
@@ -68,7 +68,8 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            overflow-x: hidden;
+            overflow-x: hidden; /* 防止水平滾動 */
+            background-color: #fffaf0;
         }
         /* 隱藏捲軸 */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
@@ -445,9 +446,8 @@
 
             return (
                 <div 
-                    className="min-h-screen flex flex-col items-center py-8 font-sans text-gray-800 relative select-none"
+                    className="min-h-screen flex flex-col items-center py-8 font-sans text-gray-800 relative overflow-x-hidden select-none"
                     style={{
-                        backgroundColor: '#fffaf0',
                         backgroundImage: `
                             radial-gradient(circle at 10% 20%, rgba(255, 183, 178, 0.5) 0%, transparent 40%),
                             radial-gradient(circle at 90% 10%, rgba(181, 234, 215, 0.5) 0%, transparent 40%),
@@ -457,7 +457,6 @@
                         `,
                         backgroundAttachment: 'fixed',
                         backgroundSize: '120% 120%',
-                        touchAction: 'none'
                     }}
                 >
                     {/* 音樂 */}
@@ -502,14 +501,14 @@
                         </div>
 
                         {/* 中間：拼圖盤面 (Board) */}
-                        <div className="flex flex-col items-center gap-4">
-                            <div className="relative group">
+                        <div className="flex flex-col items-center gap-4 max-w-full">
+                            <div className="relative group max-w-full">
                                 {/* 發光邊框 */}
                                 <div className={`absolute -inset-2 bg-gradient-to-r from-pink-300 to-purple-300 rounded-2xl blur opacity-75 transition duration-1000 ${isGameSolved ? 'animate-pulse' : ''}`}></div>
                                 
                                 <div 
                                     ref={boardRef}
-                                    className="relative bg-white p-2 rounded-xl shadow-2xl overflow-hidden transition-all duration-500" 
+                                    className="relative bg-white p-2 rounded-xl shadow-2xl overflow-hidden transition-all duration-500 max-w-full" 
                                     style={{ width: '336px', height: '336px' }} 
                                 >
                                     {/* 如果通關了，顯示完整無縫圖 */}
@@ -555,7 +554,7 @@
 
                             {/* 拼圖待選區 */}
                             {!isGameSolved && (
-                                <div ref={trayRef} className="w-[336px] min-h-[100px] bg-white/50 backdrop-blur-md rounded-xl border border-white/60 p-2 flex flex-wrap gap-2 justify-center items-center shadow-inner">
+                                <div ref={trayRef} className="w-[336px] max-w-full min-h-[100px] bg-white/50 backdrop-blur-md rounded-xl border border-white/60 p-2 flex flex-wrap gap-2 justify-center items-center shadow-inner">
                                     {obtainedPieces.filter(p => p.currentSlot === null).length === 0 && completedQuestions.length < 4 && (
                                         <p className="text-gray-400 text-sm">回答問題來獲得拼圖...</p>
                                     )}
